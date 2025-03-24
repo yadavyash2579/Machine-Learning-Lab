@@ -1,0 +1,29 @@
+import pandas as pd
+
+# Load the Excel file
+df = pd.read_excel("filename.xlsx")
+
+# Define the grade mapping
+grade_mapping = {
+    "O": 10,
+    "A+": 9,
+    "A": 8,
+    "B+": 7,
+    "B": 6,
+    "C": 5,
+    "D": 4,
+    "F": 0
+}
+
+# Apply mapping to all columns except "Gender"
+df.loc[:, df.columns != "Gender"] = (
+    df.loc[:, df.columns != "Gender"]
+    .apply(lambda col: col.map(grade_mapping))
+    .infer_objects(copy=False)  # Ensures correct data types
+)
+
+# Display the updated DataFrame
+print(df.head())
+
+# Save the updated file (Optional)
+df.to_excel("updated_grades.xlsx", index=False)
